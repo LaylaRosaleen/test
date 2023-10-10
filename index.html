@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<html>
+<head>
+  <title>Quiz App</title>
+
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 20px;
+    }
+    h1 {
+      text-align: center;
+    }
+    .question {
+      margin-bottom: 20px;
+    }
+    .options label {
+      display: block;
+      margin-bottom: 10px;
+    }
+    .submit-btn {
+      display: block;
+      margin-top: 20px;
+    }
+    .score {
+      text-align: center;
+      margin-top: 20px;
+    }
+    .restart-btn {
+      display: block;
+      margin-top: 20px;
+    }
+  </style>
+
+
+</head>
+<body>
+  <h1>Quiz App</h1>
+  <div id="quiz"></div>
+
+
+  <script>
+    var questions = [
+      {
+        question: "Question 1: Where is the Great Barrier Reef located?",
+        options: ["Hawaii", "Australia", "Mexico", "Japan"],
+        answer: 1
+      },
+      {
+        question: "Question 2: Which country gifted the Statue of Liberty to the US?",
+        options: ["Portugal", "Germany", "Spain", "France"],
+        answer: 3
+      },
+      {
+        question: "Question 3: What sport does Cristiano Ronaldo play?",
+        options: ["Soccer", "Baseball", "Tennis", "Basketball"],
+        answer: 0
+      },
+      {
+        question: "Question 4: How many bones are there in the human body?",
+        options: ["159", "198", "206", "376"],
+        answer: 2
+      },
+      {
+        question: "Question 5: In which ocean is the Bermuda Triangle located?",
+        options: ["Red Sea", "Pacific Ocean", "Atlantic Ocean", "Indian Ocean"],
+        answer: 2
+      },
+      {
+        question: "Question 6: How many feet are in a mile?",
+        options: ["5280", "1580", "1000", "5000"],
+        answer: 0
+      },
+      {
+        question: "Question 7: Which planet is closest to Earth?",
+        options: ["Mercury", "Venus", "The Moon", "Mars"],
+        answer: 1
+      },
+    ];
+
+    let currentQuestion = 0;
+    let score = 0;
+
+    function displayQuestion() {
+      let quizElement = document.getElementById("quiz");
+      let question = questions[currentQuestion];
+
+      let questionElement = document.createElement("div");
+      questionElement.classList.add("question");
+      questionElement.textContent = question.question;
+
+      let optionsElement = document.createElement("div");
+      optionsElement.classList.add("options");
+
+      question.options.forEach(function(option, index) {
+        let label = document.createElement("label");
+        let radio = document.createElement("input");
+        radio.type = "radio";
+        radio.name = "answer";
+        radio.value = index;
+        label.appendChild(radio);
+        label.appendChild(document.createTextNode(option));
+        optionsElement.appendChild(label);
+      });
+
+      let submitBtn = document.createElement("button");
+      submitBtn.classList.add("submit-btn");
+      submitBtn.textContent = "Submit";
+      submitBtn.addEventListener("click", checkAnswer);
+
+      quizElement.innerHTML = "";
+      quizElement.appendChild(questionElement);
+      quizElement.appendChild(optionsElement);
+      quizElement.appendChild(submitBtn);
+    }
+
+    function checkAnswer() {
+      let selectedOption = document.querySelector('input[name="answer"]:checked');
+      if (selectedOption) {
+        let selectedAnswer = parseInt(selectedOption.value);
+        let question = questions[currentQuestion];
+        if (selectedAnswer === question.answer) {
+          score++;
+        }
+        currentQuestion++;
+        if (currentQuestion < questions.length) {
+          displayQuestion();
+        } else {
+          displayScore();
+        }
+      }
+    }
+
+    function displayScore() {
+      let quizElement = document.getElementById("quiz");
+      quizElement.innerHTML = "";
+
+      let scoreElement = document.createElement("div");
+      scoreElement.classList.add("score");
+      scoreElement.textContent = "Your score: " + score + " out of " + questions.length;
+
+      let restartBtn = document.createElement("button");
+      restartBtn.classList.add("restart-btn");
+      restartBtn.textContent = "Restart Quiz";
+      restartBtn.addEventListener("click", restartQuiz);
+
+      quizElement.appendChild(scoreElement);
+      quizElement.appendChild(restartBtn);
+    }
+
+    function restartQuiz() {
+      currentQuestion = 0;
+      score = 0;
+      displayQuestion();
+    }
+
+    displayQuestion();
+  </script>
+</body>
+</html>
